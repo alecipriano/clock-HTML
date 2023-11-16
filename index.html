@@ -3,99 +3,88 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clock-Html</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;1,300&display=swap');
-
-        * {
-            margin: 0;
-            padding: 0;
-            font-family: 'Open Sans', sans-serif;
-        }
-
-        body {
-            height: 100vh;
-            background: linear-gradient(120deg, #3ba7ffd8, #c125ffda);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .relogio {
-            display: flex;
-            align-items: center;
-            justify-content: space-evenly;
-            height: 25%;
-            width: 70%;
-            background: transparent;
-            border-radius: 3px;
-            box-shadow: 3px 9px 12px rgba(0, 0, 0, .5);
-        }
-
-        .relogio div {
-            height: 50%;
-            width: 25%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            color:goldenrod;
-            background: rgba(5, 5, 5, .9);
-            box-shadow: 6px 6px 17px rgba(0, 0, 0, .5);
-            border-radius: 6px;
-            letter-spacing: 3px;
-        }
-
-        .relogio span {
-            font-weight: bolder;
-            font-size: 150%;
-        }
-
-        .relogio span.tempo {
-            font-size: 26%;
-        }
-
-    </style>
+    <link rel="stylesheet" href="style.css">
+    <title>Clock-Digital</title>
     
 </head>
 <body>
-    <div class="relogio"> 
-        <div>
-            <span id="horas">00</span>
-            <span class="tempo">Hrs</span>
+    <div id="time"> 
+        <div class="circle" style="--clr:#138d13;">
+            <div class="dot hora_dot"></div>
+            <svg>
+                <circle cx="70" cy="70" r="70"></circle>
+                <circle cx="70" cy="70" r="70" id="hh"></circle>
+            </svg>            
+            <div id="hora">00</div>
         </div>
-
-        <div>
-            <span id="minutos">00</span>
-            <span class="tempo">Min</span>
+        <div class="circle" style="--clr:#f1ff29;">
+            <div class="dot min_dot"></div>
+            <svg>
+                <circle cx="70" cy="70" r="70"></circle>
+                <circle cx="70" cy="70" r="70" id="mm"></circle>
+            </svg> 
+            <div id="minuto">00</div>
         </div>
-
-        <div>
-            <span id="segundos">00</span>
-            <span class="tempo">Seg</span>
+        <div class="circle" style="--clr:#2937ff;">
+            <div class="dot seg_dot"></div>
+            <svg>
+                <circle cx="70" cy="70" r="70"></circle>
+                <circle cx="70" cy="70" r="70" id="ss"></circle>
+            </svg> 
+            <div id="segundo">00</div>
         </div>
-   
+        <div class="ap">
+            <div id="ampm">AM</div> 
+        </div>   
     </div>
     <script>
-        const horas = document.getElementById('horas');
-        const minutos = document.getElementById('minutos');
-        const segundos = document.getElementById('segundos');
 
-        const relogio = setInterval( function time() {
+        setInterval(()=> { 
+            let hora = document.getElementById('hora');
+            let minuto = document.getElementById('minuto');
+            let segundo = document.getElementById('segundo');
+            let ampm = document.getElementById('ampm');
+
+            let hh = document.getElementById('hh');
+            let mm = document.getElementById('mm');
+            let ss = document.getElementById('ss');
+
+            let hora_dot = document.querySelector('.hora_dot');
+            let min_dot = document.querySelector('.min_dot');
+            let seg_dot = document.querySelector('.seg_dot');
+
+            //let h = new Date().getHours();
+            //let m = new Date().getMinutes();
+            //let s = new Date().getSeconds();
             let dateToday = new Date();
-            let hr = dateToday.getHours();
-            let min = dateToday.getMinutes();
-            let seg = dateToday.getSeconds();
+            let h = dateToday.getHours();
+            let m = dateToday.getMinutes();
+            let s = dateToday.getSeconds();
+            let am = h >=12 ? "PM" : "AM"
 
-            if (hr < 10) hr = '0'+ hr;
-            if (min < 10) min = '0'+ min;
-            if (seg < 10) seg = '0'+ seg;
+            h = (h < 10) ? "0" + h : h;
+            m = (m < 10) ? "0" + m : m;
+            s = (s < 10) ? "0" + s : s;
 
-            horas.textContent = hr;
-            minutos.textContent = min;
-            segundos.textContent = seg;
+            hora.innerHTML = h + "<br><span>Hr<span>";
+            minuto.innerHTML = m + "<br><span>Min<span>";
+            segundo.innerHTML = s + "<br><span>Seg<span>";
+            ampm.innerHTML = am;
 
+            // 12 Horas
+            hh.style.strokeDashoffset = 440 - (440 * h) / 12;
+            // 60 minutos
+            mm.style.strokeDashoffset = 440 - (440 * m) / 60;
+            // 60 Segundos
+            ss.style.strokeDashoffset = 440 - (440 * s) / 60;
+
+            hora_dot.style.transform = `rotate(${h * 30}deg)`; // 360 / 12 = 30
+            min_dot.style.transform = `rotate(${m * 6}deg)`; // 
+            seg_dot.style.transform = `rotate(${s * 6}deg)`; // 360 / 60 = 6
+
+     
         })
+
     </script>
 </body>
 </html>
